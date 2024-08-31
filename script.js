@@ -100,6 +100,7 @@ function move() {
 gameInterval = setInterval(() => {
     move();
     draw();
+    debugger
     drawFood();
 }, gameSpeedDelay);
 
@@ -191,7 +192,7 @@ function stopGame() {
     clearInterval(gameInterval);
     gameStarted = false;
     instructionText.style.display = 'block';
-    logo.style.display = 'block';
+    
 }
 function updateHighScore() {
     currentScore = snake.length - 1;
