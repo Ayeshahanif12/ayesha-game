@@ -2,7 +2,7 @@
 const board = document.getElementById('gameBoard');
 const instructionText = document.getElementById('instruction-text');
 const score = document.getElementById('score');
-const highScoreElement = document.getElementById('highScore');
+const highscoreText = document.getElementById('highScore');
 
 
 //define game variables
@@ -20,6 +20,7 @@ function draw() {
     board.innerHTML = '';
     drawSnake();
     drawFood();
+    updateScore();
 }
 
 //draw snake 
@@ -49,7 +50,6 @@ function setPosition(element, position) {
 //draw food function 
 function drawFood() {
     if (gameStarted) {
-
         const foodElement = createGameElement('div', 'food');
         setPosition(foodElement, food);
         board.appendChild(foodElement);
@@ -89,19 +89,17 @@ function move() {
         food = generateFood();
         increaseSpeed();
         clearInterval(gameInterval);
+        gameInterval = setInterval(()=>{
+            move();
+            checkcollisions();
+            draw();
+
+        },gameSpeedDelay);
     } else {
         snake.pop();
 
     }
 }
-//test the moving
-
-gameInterval = setInterval(() => {
-    move();
-    draw();
-    debugger
-    drawFood();
-}, gameSpeedDelay);
 
 //setInterval(()=>{
 //move();   //move first 
@@ -194,10 +192,10 @@ function stopGame() {
     
 }
 function updateHighScore() {
-    currentScore = snake.length - 1;
+   const currentScore = snake.length - 1;
     if (currentScore > highScore) {
         highScore = currentScore;
-        highScoreElement.textContent = currentScore.toString().padStart( 3, '0');
+        highscoreText.textContent = currentScore.toString().padStart( 3, '0');
     }
-
+highScoreText.style.display ='block';
 }
