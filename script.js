@@ -2,7 +2,7 @@
 const board = document.getElementById('gameBoard');
 const instructionText = document.getElementById('instruction-text');
 const score = document.getElementById('score');
-const highscoreText = document.getElementById('highScore');
+const highScoreText = document.getElementById('highScore');
 
 
 //define game variables
@@ -17,6 +17,7 @@ let gameStarted = false;
 
 //draw game map,snake,food
 function draw() {
+
     board.innerHTML = '';
     drawSnake();
     drawFood();
@@ -25,6 +26,7 @@ function draw() {
 
 //draw snake 
 function drawSnake() {
+
     snake.forEach(segment => {
         const snakeElement = createGameElement('div',
             'snake');
@@ -49,20 +51,25 @@ function setPosition(element, position) {
 
 //draw food function 
 function drawFood() {
-    if (gameStarted) {
-        const foodElement = createGameElement('div', 'food');
-        setPosition(foodElement, food);
-        board.appendChild(foodElement);
-    }
+    const foodElement = createGameElement('div', 'food');
+    setPosition(foodElement, food);
+    board.appendChild(foodElement);
+
 }
+
 
 //generate food
 function generateFood() {
-    debugger
-    const x = Math.floor(Math.random() * gridSize) + 1;
-    const y = Math.floor(Math.random() * gridSize) + 1;
-    return { x, y };
+    let newFood;
+    do {
+        newFood = {
+            x: Math.floor(Math.random() * gridSize) + 1,
+            y: Math.floor(Math.random() * gridSize) + 1
+        };
+    } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
+    return newFood;
 }
+
 
 //moving the snake 
 function move() {
@@ -82,25 +89,70 @@ function move() {
             break;
 
     }
+}
+//snake.unshift(head);
+// snake.pop();
+
+if (head.x === food.x && head.y === food.y) {
+    generateFood();
+    increaseSpeed();
+    clearInterval(gameInterval);
+    gameInterval = setInterval(() => {
+        move();
+        checkcollisions();
+        draw();
+
+    }, gameSpeedDelay);
+} else {
     snake.unshift(head);
-    // snake.pop();
+    snake.pop();
 
-    if (head.x === food.x && head.y === food.y) {
-        food = generateFood();
-        increaseSpeed();
+}
+if (checkcollisions()) {
+    resetGame();
+} else {
+    draw();
+}
+
+function increaseScore() {
+    score++;
+    if (score > highScore) {
+        highScore = score;
+    }
+
+}
+
+
+function increaseSpeed() {
+    if (gameSpeed > 50) {
+        gameSpeed -= 10;
         clearInterval(gameInterval);
-        gameInterval = setInterval(()=>{
-            move();
-            checkcollisions();
-            draw();
-
-        },gameSpeedDelay);
-    } else {
-        snake.pop();
-
+        gameInterval = setInterval(move, gameSpeed);
     }
 }
 
+function checkcollisions() {
+    const head = snake[0];
+    if (head.x < 1 || head.x > gridSize || head.y < 1 || head.y > gridSize) {
+        resetGame();
+    }
+    for (let i = 1; i < snake.length; i++) {
+        if (head.x === snake[i].x && head.y === snake[i].y) {
+            resetGame();
+        }
+    }
+}
+
+function resetGame() {
+    score = 0;
+    snake = [{ x: 10, y: 10 }];
+    direction = 'right';
+    food = generateFood();
+    gameSpeed = 200;
+    clearInterval(gameInterval);
+    gameInterval = setInterval(move, gameSpeed);
+    updateScore();
+}
 //setInterval(()=>{
 //move();   //move first 
 //draw();   // draw again new position 
@@ -113,18 +165,12 @@ function startGame() {
     gameStarted = true; // keep track of the game 
     instructionText.style.display = 'none';
     logo.style.display = 'none';
-    gameInterval = setInterval(() => {
-        move();
-        checkcollisions();
-        draw();
-    }, gameInterval);
+    gameInterval = setInterval(move, gameSpeedDelay);
 }
 //keypress event listener 
 function handleKeyPress(event) {
-    if (
-        (!gameStarted && event.code === 'space') ||
-        (!gameStarted && event.key === '')
-    ) {
+    if
+        (!gameStarted && event.code === 'space') {
         startGame();
     } else {
         switch (event.key) {
@@ -145,20 +191,6 @@ function handleKeyPress(event) {
 }
 document.addEventListener('keydown', handleKeyPress);
 
-function increaseSpeed() {
-    //console.log(gameSpeedDelay);
-    if (gameSpeedDelay > 150) {
-        gameSpeedDelay -= 5;
-    } else if (gameSpeedDelay > 100) {
-        gameSpeedDelay -= 3;
-    }
-    else if (gameSpeedDelay > 50) {
-        gameSpeedDelay -= 2;
-    }
-    else if (gameSpeedDelay > 25) {
-        gameSpeedDelay -= 1;
-    }
-}
 
 function checkcollisions() {
     const head = snake[0];
@@ -172,30 +204,49 @@ function checkcollisions() {
     }
 }
 
-function resetGame() {
-    updateHighScore();
-    stopGame();
-    snake = [{ x: 10, y: 10 }];
-    food = generateFood();
-    direction = 'right';
-    gameSpeedDelay = 200;
-    updateScore();
-}
+
+
 function updateScore() {
     const currentScore = snake.length - 1;
     score.textContent = currentScore.toString().padStart(3, '0');
 }
-function stopGame() {
-    clearInterval(gameInterval);
-    gameStarted = false;
-    instructionText.style.display = 'block';
-    
+function startGame() {
+
+    gameStarted = true; // keep track of the game 
+    instructionText.style.display = 'none';
+    logo.style.display = 'none';
+    gameInterval = setInterval(move, gameSpeedDelay);
 }
+//keypress event listener 
+function handleKeyPress(event) {
+    if
+        (!gameStarted && event.code === 'space') {
+        startGame();
+    } else {
+        switch (event.key) {
+            case 'ArrowUp':
+                direction = 'up';
+                break;
+            case 'ArrowDown':
+                direction = 'down';
+                break;
+            case 'ArrowLeft':
+                direction = 'left';
+                break;
+            case 'ArrowRight':
+                direction = 'right';
+                break;
+        }
+    }
+}
+document.addEventListener('keydown', handleKeyPress);
+
+
 function updateHighScore() {
-   const currentScore = snake.length - 1;
+    const currentScore = snake.length - 1;
     if (currentScore > highScore) {
         highScore = currentScore;
-        highscoreText.textContent = currentScore.toString().padStart( 3, '0');
+        highScoreText.textContent = currentScore.toString().padStart(3, '0');
     }
-highScoreText.style.display ='block';
+    highScoreText.style.display = 'block';
 }
