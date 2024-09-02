@@ -57,7 +57,7 @@ body,
     width: 100%; /* Full width of the container */
     max-width: 600px; /* Adjust as needed */
     margin-bottom: 20px; /* Space between scores and game board */
-    font-size: 40vw;
+    font-size: 40px;
     font-weight: bolder;
     color: #abb78a;
 }
@@ -68,7 +68,7 @@ body,
 
 #score,
 #highScore {
-    font-size: 40vw;
+    font-size: 40px;
     font-weight: bolder;
     margin: 10px 0;
 
@@ -91,9 +91,9 @@ body,
 }
 
 .food {
-    background-color: #25212133;
-    border: #999 5px solid;
-    height: 100% ;
-    width: 100%;
+    background-color:black ;
+    border: black 5px solid;
      position: absolute;
+     width: 8px;
+     height: 8PX;
 }
