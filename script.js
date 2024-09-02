@@ -41,10 +41,6 @@ function createGameElement(tag, className) {
 // set the position of snake and food
 function setPosition(element, position) {
 
-<<<<<<< HEAD
-    console.log('Setting position:', position);
-=======
->>>>>>> acdff1280c63e126f1426a331ce0c3a7131dc593
     element.style.gridColumn = position.x;
     element.style.gridRow = position.y;
 }
@@ -54,10 +50,6 @@ function setPosition(element, position) {
 //draw food function 
 function drawFood() {
     if (gameStarted) {
-<<<<<<< HEAD
-        console.log('Drawing food at:', food);
-=======
->>>>>>> acdff1280c63e126f1426a331ce0c3a7131dc593
         const foodElement = createGameElement('div', 'food');
         setPosition(foodElement, food);
         board.appendChild(foodElement);
