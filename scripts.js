@@ -14,13 +14,15 @@ let gameInterval;
 let gameSpeed = 200;
 let gameStarted = false;
 
+
+//Drawing a snake or food
 function draw() {
     board.innerHTML = '';
     drawSnake();
     drawFood();
     updateScore();
 }
-
+//drawSnake
 function drawSnake() {
     snake.forEach(segment => {
         const snakeElement = createGameElement('div', 'snake');
@@ -40,12 +42,14 @@ function setPosition(element, position) {
     element.style.gridRow = position.y;
 }
 
+//drawing food
 function drawFood() {
     const foodElement = createGameElement('div', 'food');
     setPosition(foodElement, food);
     board.appendChild(foodElement);
 }
 
+//generate food
 function generateFood() {
     let newFood;
     do {
@@ -57,6 +61,7 @@ function generateFood() {
     return newFood;
 }
 
+//moving from side
 function move() {
     const head = { ...snake[0] };
     switch (direction) {
