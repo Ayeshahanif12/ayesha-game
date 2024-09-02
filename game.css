@@ -19,7 +19,7 @@ body,
     grid-template-columns: repeat(20, 20px);
     grid-template-rows: repeat(20, 20px);
     margin: 5px;
-}
+    }
 
 .game-border1 {
     border: #595f43 solid 10px;
@@ -53,12 +53,9 @@ body,
 .scores {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    /* Full width of the container */
-    max-width: 600px;
-    /* Adjust as needed */
-    margin-bottom: 20px;
-    /* Space between scores and game board */
+    width: 100%; /* Full width of the container */
+    max-width: 600px; /* Adjust as needed */
+    margin-bottom: 20px; /* Space between scores and game board */
     font-size: 40px;
     font-weight: bolder;
     color: #abb78a;
@@ -81,21 +78,21 @@ body,
     display: none;
 }
 
-.game-border3,
+.game-border3 ,
 #logo {
     background-color: #c4cfa3;
 }
 
 
 .snake {
-    background-color: white;
-    border: 1px solid #000;
+    background-color: white ;
+    border:1px solid #000 ;
 }
 
 .food {
     background-color: #25212133;
     border: #999 5px solid;
-    height: 20px;
+    height: 20px ;
     width: 20px;
-    position: absolute;
+     position: absolute;
 }
