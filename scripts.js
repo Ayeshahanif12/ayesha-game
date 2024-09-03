@@ -1,6 +1,8 @@
 const board = document.getElementById('gameBoard');
 const scoreElement = document.getElementById('score');
 const instructionText = document.getElementById('instruction-text');
+const highScoreElement = document.getElementById('highScore');
+
 
 const gridSize = 20;
 let snake = [{ x: 10, y: 10 }];
