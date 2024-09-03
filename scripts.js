@@ -12,7 +12,7 @@ let score = 0;
 let gameInterval;
 let gameSpeed = 200;
 let gameStarted = false;
-
+let highScore = 0;
 function draw() {
     board.innerHTML = '';
     drawSnake();
@@ -88,7 +88,7 @@ function move() {
 function increaseScore() {
     score++;
     scoreElement.textContent = `Score: ${score}`;
-    highScore.textContent =`highScore: ${highScore}`;
+    updateHighScore();
 }
 
 function increaseSpeed() {
@@ -143,6 +143,7 @@ function startGame() {
     if (!gameStarted) {
         gameStarted = true;
         instructionText.style.display = 'none';
+        draw();
         gameInterval = setInterval(() => {
             move();
             draw();
