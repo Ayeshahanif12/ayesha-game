@@ -1,28 +1,22 @@
-// script.js
-
 const board = document.getElementById('gameBoard');
 const scoreElement = document.getElementById('score');
-const highScoreElement = document.getElementById('highScore');
+const instructionText = document.getElementById('instruction-text');
 
 const gridSize = 20;
 let snake = [{ x: 10, y: 10 }];
 let food = generateFood();
 let direction = 'right';
 let score = 0;
-let highScore = 0;
 let gameInterval;
 let gameSpeed = 200;
 let gameStarted = false;
 
-
-//Drawing a snake or food
 function draw() {
     board.innerHTML = '';
     drawSnake();
     drawFood();
-    updateScore();
 }
-//drawSnake
+
 function drawSnake() {
     snake.forEach(segment => {
         const snakeElement = createGameElement('div', 'snake');
@@ -42,14 +36,14 @@ function setPosition(element, position) {
     element.style.gridRow = position.y;
 }
 
-//drawing food
 function drawFood() {
-    const foodElement = createGameElement('div', 'food');
-    setPosition(foodElement, food);
-    board.appendChild(foodElement);
+    if (gameStarted) {
+        const foodElement = createGameElement('div', 'food');
+        setPosition(foodElement, food);
+        board.appendChild(foodElement);
+    }
 }
 
-//generate food
 function generateFood() {
     let newFood;
     do {
@@ -61,9 +55,9 @@ function generateFood() {
     return newFood;
 }
 
-//moving from side
 function move() {
     const head = { ...snake[0] };
+
     switch (direction) {
         case 'up': head.y--; break;
         case 'down': head.y++; break;
@@ -71,40 +65,42 @@ function move() {
         case 'right': head.x++; break;
     }
 
+    if (checkCollisions(head)) {
+        resetGame();
+        return;
+    }
+
+    snake.unshift(head);
+
     if (head.x === food.x && head.y === food.y) {
-        snake.unshift(head);
         food = generateFood();
         increaseScore();
         increaseSpeed();
     } else {
-        snake.unshift(head);
         snake.pop();
     }
 
-    if (checkCollisions()) {
-        resetGame();
-    } else {
-        draw();
-    }
+    draw();
 }
 
 function increaseScore() {
     score++;
-    if (score > highScore) {
-        highScore = score;
-    }
+    scoreElement.textContent = `Score: ${score}`;
+    highScore.textContent =`highScore: ${highScore}`;
 }
 
 function increaseSpeed() {
     if (gameSpeed > 50) {
         gameSpeed -= 10;
-        clearInterval(gameInterval);
-        gameInterval = setInterval(move, gameSpeed);
     }
+    clearInterval(gameInterval);
+    gameInterval = setInterval(() => {
+        move();
+        draw();
+    }, gameSpeed);
 }
 
-function checkCollisions() {
-    const head = snake[0];
+function checkCollisions(head) {
     return (
         head.x < 1 || head.x > gridSize ||
         head.y < 1 || head.y > gridSize ||
@@ -113,35 +109,63 @@ function checkCollisions() {
 }
 
 function resetGame() {
-    score = 0;
+    updateHighScore();
+    stopGame();
     snake = [{ x: 10, y: 10 }];
-    direction = 'right';
     food = generateFood();
+    direction = 'right';
     gameSpeed = 200;
-    clearInterval(gameInterval);
-    gameInterval = setInterval(move, gameSpeed);
-    updateScore();
+    score = 0;
+    scoreElement.textContent = `Score: ${score}`;
 }
 
 function updateScore() {
     scoreElement.textContent = `Score: ${score}`;
-    highScoreElement.textContent = `High Score: ${highScore}`;
+}
+
+function stopGame() {
+    clearInterval(gameInterval);
+    gameStarted = false;
+    instructionText.style.display = 'block';
+}
+
+function updateHighScore() {
+    const currentScore = score;
+    if (currentScore > highScore) {
+        highScore = currentScore;
+        highScoreElement.textContent = `High Score: ${highScore}`;
+    }
 }
 
 function startGame() {
     if (!gameStarted) {
         gameStarted = true;
-        gameInterval = setInterval(move, gameSpeed);
+        instructionText.style.display = 'none';
+        gameInterval = setInterval(() => {
+            move();
+            draw();
+        }, gameSpeed);
     }
 }
 
 function handleKeyPress(event) {
-    switch (event.key) {
-        case 'ArrowUp': if (direction !== 'down') direction = 'up'; break;
-        case 'ArrowDown': if (direction !== 'up') direction = 'down'; break;
-        case 'ArrowLeft': if (direction !== 'right') direction = 'left'; break;
-        case 'ArrowRight': if (direction !== 'left') direction = 'right'; break;
-        case ' ': startGame(); break; // Space to start the game
+    if (!gameStarted && event.code === 'Space') {
+        startGame();
+    } else {
+        switch (event.key) {
+            case 'ArrowUp':
+                if (direction !== 'down') direction = 'up';
+                break;
+            case 'ArrowDown':
+                if (direction !== 'up') direction = 'down';
+                break;
+            case 'ArrowLeft':
+                if (direction !== 'right') direction = 'left';
+                break;
+            case 'ArrowRight':
+                if (direction !== 'left') direction = 'right';
+                break;
+        }
     }
 }
 

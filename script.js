@@ -120,6 +120,8 @@ function startGame() {
         checkcollisions();
         draw();
     }, gameInterval);
+
+    instructionText.style.display= 'none';
 }
 //keypress event listener 
 function handleKeyPress(event) {
