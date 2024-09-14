@@ -6,17 +6,17 @@ const highScoreElement = document.getElementById('highScore');
 
 const gridSize = 20;
 let snake = [{ x: 10, y: 10 }];
-let food = generateFood();
 let direction = 'right';
 let score = 0;
 let gameInterval;
-let gameSpeed = 200;
+let gameSpeed = 10;
 let gameStarted = false;
+let food = {x:0, y:0};
 let highScore = 0;
 function draw() {
-    board.innerHTML = '';
+    // board.innerHTML = '';
+    document.querySelectorAll('.snake').forEach(e => e.remove());
     drawSnake();
-    drawFood();
 }
 
 function drawSnake() {
@@ -38,22 +38,26 @@ function setPosition(element, position) {
     element.style.gridRow = position.y;
 }
 
-function drawFood() {
+function drawFood(newFood) {
     if (gameStarted) {
         const foodElement = createGameElement('div', 'food');
-        setPosition(foodElement, food);
+        setPosition(foodElement, newFood);
         board.appendChild(foodElement);
     }
 }
 
 function generateFood() {
+    document.querySelectorAll('.food').forEach(e => e.remove());
     let newFood;
     do {
+        debugger;
         newFood = {
             x: Math.floor(Math.random() * gridSize) + 1,
             y: Math.floor(Math.random() * gridSize) + 1
         };
+        drawFood({...newFood});
     } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
+
     return newFood;
 }
 
@@ -75,7 +79,7 @@ function move() {
     snake.unshift(head);
 
     if (head.x === food.x && head.y === food.y) {
-        food = generateFood();
+        food = {...generateFood()};
         increaseScore();
         increaseSpeed();
     } else {
@@ -114,7 +118,7 @@ function resetGame() {
     updateHighScore();
     stopGame();
     snake = [{ x: 10, y: 10 }];
-    food = generateFood();
+    food = {...generateFood()};
     direction = 'right';
     gameSpeed = 200;
     score = 0;
@@ -143,6 +147,7 @@ function startGame() {
     if (!gameStarted) {
         gameStarted = true;
         instructionText.style.display = 'none';
+        food = {...generateFood()};
         draw();
         gameInterval = setInterval(() => {
             move();
