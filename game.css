@@ -93,7 +93,6 @@ body,
 .food {
     background-color:black ;
     border: black 5px solid;
-     position: absolute;
      width: 8px;
      height: 8PX;
 }
