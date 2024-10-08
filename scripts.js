@@ -1,6 +1,7 @@
 const board = document.getElementById('gameBoard');
 const scoreElement = document.getElementById('score');
 const instructionText = document.getElementById('instruction-text');
+const snakeLogo= document.getElementById('snakelogo');
 const highScoreElement = document.getElementById('highScore');
 
 
@@ -53,7 +54,7 @@ function generateFood() {
         debugger;
         newFood = {
             x: Math.floor(Math.random() * gridSize) + 1,
-            y: Math.floor(Math.random() * gridSize) + 1
+            y: Math.floor(Math.random() * gridSize) + 1,
         };
         drawFood({...newFood});
     } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
@@ -147,6 +148,8 @@ function startGame() {
     if (!gameStarted) {
         gameStarted = true;
         instructionText.style.display = 'none';
+        snakeLogo.style.display = 'none';
+
         food = {...generateFood()};
         draw();
         gameInterval = setInterval(() => {
