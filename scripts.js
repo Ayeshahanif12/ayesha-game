@@ -14,11 +14,19 @@ let gameSpeed = 10;
 let gameStarted = false;
 let food = {x:0, y:0};
 let highScore = 0;
+
+//drawing snake
 function draw() {
-    // board.innerHTML = '';
+    // Only draw if the game has started
+    if (!gameStarted) return;
+
+    // Clear the previous snake segments
     document.querySelectorAll('.snake').forEach(e => e.remove());
+    
+    // Draw the snake
     drawSnake();
 }
+
 
 function drawSnake() {
     snake.forEach(segment => {
@@ -51,7 +59,7 @@ function generateFood() {
     document.querySelectorAll('.food').forEach(e => e.remove());
     let newFood;
     do {
-        debugger;
+        
         newFood = {
             x: Math.floor(Math.random() * gridSize) + 1,
             y: Math.floor(Math.random() * gridSize) + 1,
@@ -97,8 +105,12 @@ function increaseScore() {
 }
 
 function increaseSpeed() {
-    if (gameSpeed > 50) {
-        gameSpeed -= 10;
+    // Set the minimum speed limit (lower value = faster snake)
+    const minimumSpeed = 50;
+
+    // Decrease speed gradually by reducing less with each increase
+    if (gameSpeed > minimumSpeed) {
+        gameSpeed -= 5; // Adjust this to decrease speed more gradually (was 10)
     }
     clearInterval(gameInterval);
     gameInterval = setInterval(() => {
@@ -131,9 +143,17 @@ function updateScore() {
 }
 
 function stopGame() {
+    // Stop the game loop
     clearInterval(gameInterval);
+
+    // Reset game state
     gameStarted = false;
+
+    // Hide the instruction text again
     instructionText.style.display = 'block';
+
+    // Remove the snake from the board when the game ends
+    document.querySelectorAll('.snake').forEach(e => e.remove());
 }
 
 function updateHighScore() {
@@ -148,7 +168,6 @@ function startGame() {
     if (!gameStarted) {
         gameStarted = true;
         instructionText.style.display = 'none';
-        snakeLogo.style.display = 'none';
 
         food = {...generateFood()};
         draw();
