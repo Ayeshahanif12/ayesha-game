@@ -168,6 +168,7 @@ function startGame() {
     if (!gameStarted) {
         gameStarted = true;
         instructionText.style.display = 'none';
+        
 
         food = {...generateFood()};
         draw();
