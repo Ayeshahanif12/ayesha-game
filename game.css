@@ -11,7 +11,7 @@ body {
 
 body,
 .snake {
-    background-color: ;
+    background-color:#abb78a ;
 }
 
 #gameBoard {
@@ -31,7 +31,7 @@ body,
 #instruction-text {
     position: absolute;
     top: 60%;
-    color: #333;
+    color: black;
     width: 300px;
     text-align: center;
     text-transform: capitalize;
@@ -47,11 +47,7 @@ body,
     margin-bottom: 20px; /* Space between scores and game board */
     font-size: 40px;
     font-weight: bolder;
-    color: #abb78a;
-}
-
-#score {
-    color: #abb78a;
+    color: yellow;
 }
 
 #score,
@@ -59,21 +55,16 @@ body,
     font-size: 40px;
     font-weight: bolder;
     margin: 10px 0;
+}
 
+#score {
+    color: yellow;
 }
 
 #highScore {
     color:yellow;
     
 }
-
-.game-border3 ,
-#logo {
-    background-color: #c4cfa3;
-    
-    
-}
-
 
 .snake {
     background-color: green ;
