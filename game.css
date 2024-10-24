@@ -15,30 +15,18 @@ body,
 }
 
 #gameBoard {
-    border-radius: 100px;
+    width: 400px;
+    height: 400px;
     display: grid;
-    grid-template-columns: repeat(20, 20px);
-    grid-template-rows: repeat(20, 20px);
-    margin: 5px;
-    }
-
-.game-border1 {
-    border: #595f43 solid 10px;
-    border-radius: 30px;
-    box-shadow: inset 0 0 0 10px #595f43;
+    grid-template-columns: repeat(20, 1fr); /* 20 columns */
+    grid-template-rows: repeat(20, 1fr); /* 20 rows */
+    outline: 10px solid black; /* Outer outline */
+    margin-inline: auto;
+    margin-block: 1.5rem;
+    background-color: white; /* Background color of the board */
 }
 
-.game-border2 {
-    border: #abb78a solid 8px;
-    border-radius: 26px;
-    box-shadow: inset 0 0 0 10px #abb78a;
-}
 
-.game-border3 {
-    border: #8b966c solid 30px;
-    border-radius: 20px;
-    box-shadow: inset 0 0 0 10px #8b966c;
-}
 
 #instruction-text {
     position: absolute;
@@ -75,7 +63,7 @@ body,
 }
 
 #highScore {
-    color: #000;
+    color:yellow;
     
 }
 
@@ -88,13 +76,14 @@ body,
 
 
 .snake {
-    background-color: white ;
-    border:1px solid #000 ;
+    background-color: green ;
+    border:1px solid green;
+
 }
 
 .food {
-    background-color:black ;
-    border: black 5px solid;
+    background-color:red  ;
+    border: red 5px solid;
      width: 8px;
      height: 8PX;
 }
